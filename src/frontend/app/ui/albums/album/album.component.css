@@ -1,0 +1,72 @@
+:host {
+  transition: scale .3s ease-out;
+}
+
+:host:hover {
+  scale: 98%;
+}
+
+.info-button {
+  margin: 2px;
+  cursor: default;
+}
+
+
+.delete {
+  cursor: pointer;
+  transition: all .05s ease-in-out;
+  transform: scale(1.0, 1.0);
+}
+
+.delete:hover {
+  transform: scale(1.4, 1.4);
+}
+
+
+a {
+  position: relative;
+}
+
+.photo-container {
+  border: 1px solid #333;
+  width: 180px;
+  height: 180px;
+  background-color: var(--item-background);
+}
+
+.no-image {
+  display: block;
+  color: var(--bs-secondary-color);
+  width: 100px;
+  top: calc(50%);
+  left: calc(50%);
+  transform: translate(-50%, -50%);
+  position: relative;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.info {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: medium;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 5px;
+  width: 100%;
+  line-height: normal;
+}
+
+a:hover .info {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+a:hover .photo-container {
+  border-color: #000;
+}

@@ -1,0 +1,13 @@
+.progress {
+  padding: 0;
+  line-height: 1rem;
+}
+
+.progress-row {
+  font-size: .75rem;
+}
+
+
+.clickable {
+  cursor: pointer;
+}

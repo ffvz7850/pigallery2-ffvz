@@ -1,0 +1,214 @@
+:host {
+  position: relative;
+  overflow: hidden;
+  transition: scale .3s ease-out;
+}
+
+:host:hover {
+  scale: 98%;
+}
+
+img {
+  width: inherit;
+  height: inherit;
+
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 2s; /* Firefox < 16 */
+  -ms-animation: fadein 2s; /* Internet Explorer */
+  -o-animation: fadein 2s; /* Opera < 12.1 */
+  animation: fadein 2s;
+  vertical-align: unset;
+}
+
+img.loading {
+  background: var(--item-background);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.photo-container:hover .info {
+  animation: show-info .3s forwards;
+}
+
+@keyframes show-info {
+  0% {
+    transform: translateY(0);
+    background-color: transparent;
+  }
+
+  100% {
+    transform: translateY(-100%);
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+@keyframes hide-info {
+
+  0% {
+    transform: translateY(-100%);
+    background: rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    transform: translateY(0);
+    background-color: transparent;
+  }
+}
+
+.info {
+  animation: hide-info .3s forwards;
+  transform: translateY(0);
+  background-color: transparent;
+  color: white;
+  font-size: medium;
+  display: table-caption;
+  position: absolute;
+  padding: 5px;
+  width: 100%;
+  margin-top: 0;
+
+  transition: transform .3s ease-out, background-color .3s ease-out;
+  -moz-transition: transform .3s ease-out, background-color .3s ease-out;
+  -webkit-transition: transform .3s ease-out, background-color .3s ease-out;
+  -o-transition: transform .3s ease-out, background-color .3s ease-out;
+  -ms-transition: transform .3s ease-out, background-color .3s ease-out;
+}
+
+.photo-container {
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+}
+
+.photo-name {
+  display: inline-block;
+}
+
+.photo-position {
+  display: inline-block;
+  float: right;
+}
+
+a {
+  color: white;
+}
+
+.photo-keywords {
+  margin-top: 5px;
+  font-size: small;
+  text-align: right;
+  display: inline-block;
+  width: 100%;
+}
+
+.video-indicator {
+  font-size: large;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  white-space: nowrap;
+  border-bottom-left-radius: 15px !important;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  transition: background-color .3s ease-out;
+  -moz-transition: background-color .3s ease-out;
+  -webkit-transition: background-color .3s ease-out;
+  -o-transition: background-color .3s ease-out;
+  -ms-transition: background-color .3s ease-out;
+}
+
+.photo-container:hover .video-indicator {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.photo-keywords ng-icon {
+  margin-right: 2px;
+}
+
+.media-buttons {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  display: flex;
+  gap: 5px;
+  z-index: 10;
+}
+
+.media-button {
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+  cursor: pointer;
+  transition: background-color .3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.media-button-icon {
+  width: 18px;
+  height: 18px;
+  fill: white;
+  color: white;
+}
+
+.photo-container:hover .media-button {
+  opacity: 1;
+}
+
+.media-button {
+  opacity: 0;
+  transition: opacity .3s ease-out;
+}
+
+.media-button.always-visible {
+  opacity: 1;
+}
+
+.no-click {
+  cursor: auto;
+}

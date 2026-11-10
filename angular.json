@@ -1,0 +1,241 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics",
+      "@schematics/angular"
+    ],
+    "analytics": false
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "pigallery2": {
+      "root": "",
+      "sourceRoot": "src/frontend",
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "prefix": "app",
+      "i18n": {
+        "sourceLocale": {
+          "code": "en",
+          "baseHref": ""
+        },
+        "locales": {
+          "zh": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.cn.xlf"
+          },
+          "de": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.de.xlf"
+          },
+          "es": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.es.xlf"
+          },
+          "fr": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.fr.xlf"
+          },
+          "hu": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.hu.xlf"
+          },
+          "id": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.id.xlf"
+          },
+          "it": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.it.xlf"
+          },
+          "ro": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.ro.xlf"
+          },
+          "ru": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.ru.xlf"
+          },
+          "sk": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.sk.xlf"
+          },
+          "sv": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.sv.xlf"
+          },
+          "pl": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.pl.xlf"
+          },
+          "nl": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.nl.xlf"
+          },
+          "pt-br": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.pt-br.xlf"
+          },
+          "da": {
+            "baseHref": "",
+            "translation": "src/frontend/translate/messages.da.xlf"
+          }
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "localize": true,
+            "aot": true,
+            "crossOrigin": "anonymous",
+            "outputPath": "dist",
+            "index": "src/frontend/index.html",
+            "progress": true,
+            "main": "src/frontend/main.ts",
+            "tsConfig": "src/frontend/tsconfig.app.json",
+            "polyfills": "src/frontend/polyfills.ts",
+            "assets": [
+              "src/frontend/robots.txt",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets/"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+              "src/frontend/styles.css"
+            ],
+            "scripts": [
+              "node_modules/marked/marked.min.js"
+            ],
+            "i18nMissingTranslation": "warning",
+            "customWebpackConfig": {
+              "path": "./angular.webpack.js",
+              "replaceDuplicatePlugins": true
+            }
+          },
+          "configurations": {
+            "dev": {
+              "outputPath": "dist/en",
+              "localize": false,
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "watch": true
+            },
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/frontend/environments/environment.ts",
+                  "with": "src/frontend/environments/environment.prod.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "pigallery2:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "pigallery2:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "options": {
+            "buildTarget": "pigallery2:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/custom-webpack:karma",
+          "options": {
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": [
+              "src/frontend/polyfills.ts",
+              "zone.js/testing"
+            ],
+            "tsConfig": "src/frontend/tsconfig.spec.json",
+            "scripts": [],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+              "src/frontend/styles.css"
+            ],
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets/"
+              }
+            ],
+            "customWebpackConfig": {
+              "path": "./angular.webpack.js",
+              "replaceDuplicatePlugins": true
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
+  }
+}

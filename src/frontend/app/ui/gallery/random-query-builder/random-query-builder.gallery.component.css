@@ -1,0 +1,27 @@
+.modal {
+  z-index: 9999;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.row {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+button.disabled {
+  /* Make the disabled links grayish*/
+  color: gray;
+  /* And disable the pointer events */
+  pointer-events: none;
+}
+
+button.dropdown-item {
+  padding: 0.3rem 1.0rem 0.3rem 0.8rem;
+}
+
+button.dropdown-item ng-icon {
+  margin-right: 0.5rem;
+}

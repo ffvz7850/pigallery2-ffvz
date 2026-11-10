@@ -1,0 +1,16 @@
+{
+  "cameraData": {
+    "ISO": 400,
+    "exposure": 2,
+    "fStop": 2.8,
+    "focalLength": 8,
+    "make": "NIKON",
+    "model": "E880"
+  },
+  "creationDate": "fileModificationTime",
+  "fileSize": 72850,
+  "size": {
+    "height": 768,
+    "width": 1024
+  }
+}

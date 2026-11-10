@@ -1,0 +1,34 @@
+<div class="vf-root" *ngIf="opened">
+  <div class="vf-scroll" #scroll (scroll)="onScroll()" (click)="toggleHud()">
+    <div class="vf-canvas" [style.height.px]="totalHeight">
+      <div class="vf-item" *ngFor="let w of windowItems; trackBy: trackIndex"
+           [style.transform]="'translate3d(0,' + w.top + 'px,0)'"
+           [style.height.px]="w.height">
+
+        <ng-container *ngIf="w.item.gridMedia.isPhoto()">
+          <img [class.vf-ok]="w.item.loaded"
+               [class.vf-failed]="w.item.failed"
+               [src]="srcOf(w.item)"
+               [alt]="w.item.gridMedia.media.name"
+               (load)="onImageLoad(w.item, $event)"
+               (error)="onImageError(w.item)"/>
+        </ng-container>
+
+        <ng-container *ngIf="w.item.gridMedia.isVideo()">
+          <video *ngIf="w.item.playing" class="vf-video" controls playsinline autoplay
+                 [src]="videoOf(w.item)"></video>
+          <ng-container *ngIf="!w.item.playing">
+            <img class="vf-poster" [src]="posterOf(w.item)" alt=""/>
+            <button class="vf-play" type="button"
+                    (click)="playVideo(w.item, $event)" aria-label="play">▶</button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="vf-topbar" [class.vf-hidden]="!hudVisible">
+    <span class="vf-hud">{{ current + 1 }} / {{ items.length }}</span>
+    <button class="vf-close" type="button" (click)="requestClose()" aria-label="close">&times;</button>
+  </div>
+</div>

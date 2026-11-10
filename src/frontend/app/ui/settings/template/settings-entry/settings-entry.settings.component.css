@@ -1,0 +1,26 @@
+app-gallery-search-field {
+  width: 100%;
+}
+
+.changed-settings input, .changed-settings select {
+  border-color: var(--bs-primary);
+  border-width: 1px;
+}
+
+.changed-settings label {
+  color: var(--bs-primary);
+  font-weight: bold;
+}
+
+.changed-settings.docker-warning label {
+  color: var(--bs-warning);
+}
+
+.changed-settings.docker-warning select, .changed-settings.docker-warning input {
+  border-color: var(--bs-warning);
+}
+
+.warning-icon {
+  font-size: x-large;
+  margin-top: 5px;
+}

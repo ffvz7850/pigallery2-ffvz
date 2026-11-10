@@ -1,0 +1,24 @@
+--- a/src/frontend/app/ui/gallery/lightbox/lightbox.gallery.component.html
++++ b/src/frontend/app/ui/gallery/lightbox/lightbox.gallery.component.html
+@@ -4,7 +4,11 @@
+        [style.opacity]="blackCanvasOpacity">
+   </div>
+ 
+-  <div class="lightbox" #lightbox>
++  <!-- 竖图连续浏览（原图），由设置里的开关控制 -->
++  <app-gallery-lightbox-flow *ngIf="flowEnabled" #flow (closed)="onFlowClosed($event)">
++  </app-gallery-lightbox-flow>
++
++  <div class="lightbox" #lightbox *ngIf="!flowEnabled">
+     <app-gallery-lightbox-media [gridMedia]="activePhoto ? activePhoto.gridMedia : null"
+                                 [nextGridMedia]="NexGridMedia"
+                                 [loadMedia]="!animating"
+@@ -49,7 +53,7 @@
+     </app-lightbox-controls>
+   </div>
+ 
+-  <app-info-panel *ngIf="activePhoto && infoPanelVisible"
++  <app-info-panel *ngIf="activePhoto && infoPanelVisible && !flowEnabled"
+                   id="info-panel"
+                   [style.width.px]="infoPanelWidth"
+                   [media]="activePhoto.gridMedia.media"

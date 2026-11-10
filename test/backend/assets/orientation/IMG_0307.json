@@ -1,0 +1,23 @@
+{
+  "cameraData": {
+    "exposure": 0.016667,
+    "fStop": 1.78,
+    "focalLength": 6.764999866370901,
+    "lens": "iPhone 16 Pro Max back triple camera 6.765mm f/1.78",
+    "make": "Apple",
+    "model": "iPhone 16 Pro Max"
+  },
+  "creationDate": 1735831555000,
+  "creationDateOffset": "-05:00",
+  "fileSize": 3946347,
+  "positionData": {
+    "GPSData": {
+      "latitude": 34.278703,
+      "longitude": -84.193947
+    }
+  },
+  "size": {
+    "height": 5712,
+    "width": 4284
+  }
+}

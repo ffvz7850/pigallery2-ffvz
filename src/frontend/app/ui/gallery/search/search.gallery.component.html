@@ -1,0 +1,104 @@
+<form class="navbar-form" role="search" #SearchForm="ngForm">
+  <div class="input-group flex-nowrap" style="place-content: flex-end;">
+
+    <app-gallery-search-field-base [(ngModel)]="rawSearchText"
+                                   (ngModelChange)="validateRawSearchText()"
+                                   class="search-field form-control p-0"
+                                   (search)="Search()"
+                                   name="search-field">
+
+    </app-gallery-search-field-base>
+
+    <button class="btn btn-tertiary lh-0" type="button"
+            [routerLink]="['/search', HTMLSearchQuery]">
+      <ng-icon name="ionSearchOutline"></ng-icon>
+    </button>
+    <button class="btn btn-tertiary lh-0"  type="button" (click)="openSearchModal(searchModal)">
+      <ng-icon size="1.2em" style="margin-left: -0.1em; margin-right: -0.1em;"
+               name="ionChevronDownOutline"></ng-icon>
+    </button>
+  </div>
+</form>
+
+
+<ng-template #searchModal>
+  <!-- sharing Modal-->
+  <div class="modal-header">
+    <h5 class="modal-title" i18n>Search</h5>
+    <button type="button" class="btn-close" (click)="hideSearchModal()" data-dismiss="modal" aria-label="Close">
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #searchPanelForm="ngForm" class="form-horizontal">
+
+      <app-gallery-search-query-builder
+        name="search-query-builder"
+        [(ngModel)]="searchQueryDTO"
+        (ngModelChange)="onQueryChange()"
+        (search)="Search()">
+      </app-gallery-search-query-builder>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group float-end row" style="display: block">
+      <div class="pe-0">
+        <button *ngIf="CanCreateAlbum"
+                class="btn btn-secondary me-2" type="button"
+                [disabled]="rawSearchText == ''"
+                (click)="openSaveSearchModal(saveSearchModal)">
+          <ng-icon name="ionSaveOutline" class="me-1"></ng-icon>
+          <ng-container i18n>Save</ng-container>
+        </button>
+        <button class="btn btn-primary" type="button"
+                [routerLink]="['/search', HTMLSearchQuery]"
+                (click)="hideSearchModal()">
+          <ng-icon name="ionSearchOutline" class="me-1"></ng-icon>
+          <ng-container i18n>Search</ng-container>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #saveSearchModal>
+  <!-- search Modal-->
+  <div class="modal-header">
+    <h5 class="modal-title" i18n>Save search to album</h5>
+    <button type="button" class="btn-close" (click)="hideSaveSearchModal()" data-dismiss="modal" aria-label="Close">
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form #saveSearchPanelForm="ngForm" class="form-horizontal">
+
+      <div class="mb-1">
+        <label for="saveSearchName" i18n>Album name</label>
+        <input
+          id="saveSearchName"
+          name="saveSearchName"
+          placeholder="Album name"
+          i18n-placeholder
+          class="form-control input-md"
+          required="required"
+          [(ngModel)]="saveSearchName"
+          type="text"/>
+      </div>
+      <div class="btn-group float-end row mt-2" role="group" style="display: block">
+        <div class="pe-0">
+          <app-saved-search-popup-btn
+            [disabled]="saveSearchName == ''"
+            class="me-2"
+            [savedSearchDTO]="{name:saveSearchName, searchQuery:searchQueryDTO}">
+          </app-saved-search-popup-btn>
+          <button class="btn btn-primary" type="button"
+                  [disabled]="saveSearchName == ''"
+                  (click)="saveSearch()">
+            <ng-icon name="ionSaveOutline" class="me-1"></ng-icon>
+            <ng-container i18n>Save as album</ng-container>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

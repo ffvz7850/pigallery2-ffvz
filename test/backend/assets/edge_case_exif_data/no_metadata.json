@@ -1,0 +1,11 @@
+{
+  "skip": [
+    "creationDate",
+    "creationDateOffset"
+  ],
+  "fileSize": 5860,
+  "size": {
+    "height": 7,
+    "width": 10
+  }
+}

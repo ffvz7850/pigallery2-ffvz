@@ -1,0 +1,35 @@
+--- a/src/common/config/public/ClientConfig.ts
++++ b/src/common/config/public/ClientConfig.ts
+@@ -1040,6 +1040,15 @@
+ 
+   @ConfigProperty({
+     tags: {
++      name: $localize`Continuous vertical view 竖列原图浏览`,
++      priority: ConfigPriority.basic,
++    },
++    description: $localize`点击图片后进入全屏竖向列表，按原图连续滚动浏览（虚拟滚动，不依赖网格已渲染的节点）；关闭则恢复原来的左右切换灯箱。 Clicking a photo opens a full screen vertical list of the original photos; turn it off to get the classic single-photo lightbox back.`
++  })
++  continuousFlowView: boolean = true;
++
++  @ConfigProperty({
++    tags: {
+       name: $localize`Titles`,
+       priority: ConfigPriority.advanced,
+       githubIssue: 801,
+@@ -1135,6 +1144,16 @@
+ @SubConfigClass<TAGS>({tags: {client: true}, softReadonly: true})
+ export class ClientGalleryConfig {
+   @ConfigProperty({
++    type: 'unsignedInt', min: 50, max: 150,
++    tags: {
++      name: $localize`Interface zoom 界面缩放`,
++      priority: ConfigPriority.basic,
++    },
++    description: $localize`整个页面的缩放比例（50~150，默认 100），等同于浏览器的缩放功能。在飞牛桌面等无法使用浏览器缩放的环境里，用它把界面整体调小或调大。保存后刷新页面生效。 Same as the browser zoom: scales the whole UI. Use it where browser zoom is unavailable. Reload the page after saving.`
++  })
++  interfaceZoom: number = 100;
++
++  @ConfigProperty({
+     tags: {
+       name: $localize`Cache`,
+       priority: ConfigPriority.underTheHood,

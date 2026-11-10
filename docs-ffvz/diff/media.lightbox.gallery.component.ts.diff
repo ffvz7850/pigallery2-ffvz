@@ -1,0 +1,28 @@
+--- a/src/frontend/app/ui/gallery/lightbox/media/media.lightbox.gallery.component.ts
++++ b/src/frontend/app/ui/gallery/lightbox/media/media.lightbox.gallery.component.ts
+@@ -272,23 +272,8 @@
+       return;
+     }
+ 
+-    if (
+-      this.zoom === 1 ||
+-      Config.Gallery.Lightbox.loadFullImageOnZoom === false
+-    ) {
+-      if (this.photo.src == null) {
+-        // Check if the preview size is adequate for lightbox display
+-        // If not, load the original instead of a tiny preview
+-        if (this.isPreviewAdequateForLightbox()) {
+-          this.photo.src = this.gridMedia.getBestSizedMediaPath(window.innerWidth, window.innerHeight);
+-          this.photo.isBestFit = true;
+-        } else {
+-          this.photo.src = this.gridMedia.getOriginalMediaPath();
+-          this.photo.isBestFit = false;
+-        }
+-      }
+-      // on zoom load high res photo
+-    } else if (this.photo.isBestFit === true || this.photo.src == null) {
++    // 定制（沿用 1.0.4）：打开灯箱即原图，不再判断预览是否够大，也不等到放大才换原图
++    if (this.photo.src !== this.gridMedia.getOriginalMediaPath()) {
+       this.photo.src = this.gridMedia.getOriginalMediaPath();
+       this.photo.isBestFit = false;
+     }

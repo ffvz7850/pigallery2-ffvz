@@ -1,0 +1,24 @@
+.version {
+  color: #6c757d;
+}
+
+.version:hover {
+  text-decoration: underline;
+}
+
+*:focus {
+  outline: none;
+}
+.admin-menu{
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+nav.sticky-top {
+  transition: top 0.3s ease-in-out;
+}
+
+.btn-settings-nav{
+  line-height: initial;
+}

@@ -1,0 +1,13 @@
+.card {
+  margin: 8px 0;
+}
+
+.row {
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.row:hover {
+  background-color: var(--bs-tertiary-bg);
+}
+

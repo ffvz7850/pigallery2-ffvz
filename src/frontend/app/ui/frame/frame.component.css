@@ -1,0 +1,85 @@
+.navbar-container {
+  z-index: 1040;
+  margin-bottom: 20px;
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 30%)
+}
+
+.auto-hide-navbar {
+  position: sticky;
+  top: 0;
+  transform: translateY(0);
+}
+
+.navbar-keep-top {
+  position: relative;
+  transform: translateY(0);
+  transition: transform 0s;
+  box-shadow: none;
+}
+
+.hide-navbar {
+  transform: translateY(-100%);
+
+}
+
+.animate-navbar {
+  transition: transform 0.3s ease-in-out;
+}
+
+.divider-vertical:first-child {
+  display: none;
+}
+
+.navbar .divider-vertical {
+  margin: 5px 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.navbar-inverse .divider-vertical {
+  border-right-color: #5d5d5d;
+  border-left-color: #3d3d3d;
+}
+
+.navbar-badge {
+  border-radius: 1rem !important;
+  margin-left: -10px;
+}
+
+
+a.dropdown-item, button.dropdown-item, div.dropdown-item {
+  padding: 0.3rem 1.0rem 0.3rem 0.8rem;
+}
+
+a.dropdown-item ng-icon, button.dropdown-item ng-icon, div.dropdown-item ng-icon {
+  margin-right: 0.5rem;
+}
+
+ng-icon {
+  vertical-align: text-top;
+}
+
+.btn-scroll-up ng-icon {
+  font-size: x-large;
+  margin: -0.2em;
+}
+
+
+a.dropdown-item span.badge, button.dropdown-item span.badge {
+  margin-left: -0.8rem;
+}
+
+.btn-scroll-up {
+  position: fixed;
+  width: 3em;
+  height: 3em;
+  right: -3em;
+  bottom: 3em;
+  transition: 0.3s right;
+  z-index: 999;
+}
+
+.show-btn-scroll-up {
+  right: 1em;
+}

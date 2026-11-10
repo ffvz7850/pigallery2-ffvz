@@ -1,0 +1,28 @@
+--- a/src/frontend/app/ui/gallery/grid/grid.gallery.component.ts
++++ b/src/frontend/app/ui/gallery/grid/grid.gallery.component.ts
+@@ -210,6 +210,25 @@
+     });
+   }
+ 
++  /** 竖图流关闭后回到网格：先确保这张被渲染，再把页面滚到它附近 */
++  public scrollToMedia(media: MediaDTO): void {
++    if (!media || !this.mediaGroups) {
++      return;
++    }
++    this.renderUpToMedia(this.queryService.getMediaStringId(media));
++    setTimeout((): void => {
++      requestAnimationFrame((): void => {
++        const photo = this.gridPhotoQL?.toArray()
++          ?.find((p): boolean => p.gridMedia.media === media);
++        if (!photo) {
++          return;
++        }
++        const dim = photo.getDimension();
++        PageHelper.ScrollY = Math.max(0, dim.top - window.innerHeight / 2 + dim.height / 2);
++      });
++    }, 0);
++  }
++
+   ngAfterViewInit(): void {
+     this.lightbox.setGridPhotoQL(this.gridPhotoQL);
+ 

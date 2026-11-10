@@ -1,0 +1,322 @@
+.navigation-arrow {
+  width: 60px;
+  height: 100px;
+  z-index: 3;
+  position: absolute;
+  top: calc(50% - 50px);
+  display: inline-block;
+  padding: 15px;
+  cursor: pointer;
+  font-size: xxx-large;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.navigation-arrow ng-icon {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  line-height: 0;
+}
+
+.navigation-arrow-left ng-icon {
+  transform: translate(-55%,-50%);
+}
+.navigation-arrow-right ng-icon {
+  transform: translate(-45%,-50%);
+}
+
+#controllers-container {
+  z-index: 1100;
+  color: white;
+}
+
+
+#swipeable-container {
+  z-index: 2;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+#rightArrow {
+  right: 0;
+  left: auto;
+  text-align: right;
+}
+
+.btn-group {
+  vertical-align: initial;
+}
+
+.controls {
+  height: initial;
+  text-align: right;
+  width: 100%;
+  font-size: large;
+  opacity: 1;
+  transition: width 0.3s ease-in-out, opacity 1s;
+  -webkit-transition: width 0.3s ease-in-out, opacity 1s;
+  -o-transition: width 0.3s ease-in-out, opacity 1s;
+  -ms-transition: width 0.3s ease-in-out, opacity 1s;
+  -moz-transition: width 0.3s ease-in-out, opacity 1s;
+}
+
+.controls-background {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+
+.controls .control-button {
+  margin-left: 0.1em;
+  margin-right: 0.1em;
+  display: inline-block;
+  padding: 0 0.2rem;
+  font-size: 1.5rem;
+  color: white;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.controls .button-disabled {
+  color: #888;
+}
+
+.controls-top {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  line-height: 0;
+}
+.controls-top ng-icon {
+  vertical-align: middle !important;
+}
+
+.controls-top ng-icon ::ng-deep svg {
+  vertical-align: top;
+}
+
+.controls-title {
+  opacity: 0.7;
+  position: absolute;
+  height: initial;
+  text-align: left;
+  padding: 5px 13px;
+  font-size: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px !important;
+}
+
+.controls-subtitle-text{
+  font-size: .6em;
+}
+
+.controls-top-left-title {
+  top: 0;
+}
+
+.controls-bottom-left-title {
+  bottom: 2rem;
+}
+
+
+.controls-zoom {
+  bottom: 0;
+  z-index: 3;
+  position: absolute;
+}
+
+.controls-playback {
+  bottom: 0;
+  z-index: 3;
+  position: absolute;
+}
+
+.controls-video {
+  padding-right: 15px;
+  bottom: 0;
+  position: absolute;
+  z-index: 3;
+}
+
+.controls-video ng-icon,
+.controls-video input {
+  color: white;
+  cursor: pointer;
+
+}
+
+.controls-big-play ng-icon {
+  font-size: 20vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.controls-video input[type=range] {
+  padding: 0;
+  margin-top: 10px;
+}
+
+.controls-video ng-icon {
+  text-align: center;
+  max-width: 45px;
+  margin-left: 10px;
+}
+
+.highlight {
+  opacity: 0.5;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out;
+  -o-transition: opacity .2s ease-out;
+  -ms-transition: opacity .2s ease-out;
+}
+
+.highlight:hover {
+  opacity: 1.0;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 1.0;
+  }
+  75% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@-webkit-keyframes blink {
+  0% {
+    opacity: 0.5;
+  }
+  25% {
+    opacity: 1.0;
+  }
+  75% {
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.button-active {
+  animation: blink 3s ease-in-out infinite;
+}
+
+
+.controls-zoom {
+  bottom: 0;
+  position: absolute;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.zoom-progress-wrapper {
+  margin-top: 3px;
+  height: 11px;
+  border: 1px solid white;
+  padding: 0;
+}
+
+
+input[type="range"].zoom-progress {
+  height: 11px;
+  margin-top: 9px;
+  border: 1px solid white;
+  background: transparent;
+  padding: 0;
+}
+
+input[type="range"].zoom-progress::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+input[type="range"].zoom-progress::-moz-range-track {
+  background: transparent;
+}
+
+
+.controls-zoom ng-icon {
+  cursor: pointer;
+}
+
+
+.faces-container {
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.face {
+  position: absolute;
+  transition: opacity 0.5s;
+}
+
+.face-name {
+  opacity: 0.0;
+  white-space: nowrap;
+  color: white;
+  text-align: center;
+  display: table;
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px !important;
+  transition: opacity 0.5s;
+}
+
+.face-box {
+  opacity: 0.0;
+  height: 100%;
+  border: 2px solid #FFF;
+  border-radius: 5px !important;
+  transition: opacity 0.5s;
+}
+
+.face .face-box.controls-nodim {
+  opacity: 0.2;
+}
+
+.face .face-name.controls-nodim {
+  opacity: 0.7;
+}
+
+.face:hover, .face:hover .face-box, .face:hover .face-name {
+  opacity: 1.0;
+  text-decoration: none;
+}
+
+.dim-controls {
+  opacity: 0.0;
+}
+
+.controls-title.controls-nodim {
+  opacity: 0.7;
+}
+
+.controls:hover {
+  opacity: 1;
+}
+
+.dropdown-menu {
+  min-width: auto;
+}
+
+canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

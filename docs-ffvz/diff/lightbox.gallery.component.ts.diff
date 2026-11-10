@@ -1,0 +1,289 @@
+--- a/src/frontend/app/ui/gallery/lightbox/lightbox.gallery.component.ts
++++ b/src/frontend/app/ui/gallery/lightbox/lightbox.gallery.component.ts
+@@ -1,4 +1,16 @@
+-import {ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, QueryList, ViewChild,} from '@angular/core';
++import {
++  ChangeDetectorRef,
++  Component,
++  ElementRef,
++  EventEmitter,
++  HostListener,
++  Input,
++  OnDestroy,
++  OnInit,
++  Output,
++  QueryList,
++  ViewChild,
++} from '@angular/core';
+ import {GalleryPhotoComponent} from '../grid/photo/photo.grid.gallery.component';
+ import {Dimension, DimensionUtils} from '../../../model/IRenderable';
+ import {FullScreenService} from '../fullscreen.service';
+@@ -21,6 +33,9 @@
+ import {NgIconComponent} from '@ng-icons/core';
+ import {InfoPanelLightboxComponent} from './infopanel/info-panel.lightbox.gallery.component';
+ import {LightboxService} from './lightbox.service';
++import {VerticalFlowLightboxComponent} from './flow/vertical-flow.lightbox.gallery.component';
++import {MediaGroup} from '../navigator/sorting.service';
++import {Config} from '../../../../../common/config/public/Config';
+ 
+ export enum LightboxStates {
+   Open = 1,
+@@ -40,14 +55,25 @@
+     NgFor,
+     ControlsLightboxComponent,
+     InfoPanelLightboxComponent,
++    VerticalFlowLightboxComponent,
+   ]
+ })
+ export class GalleryLightboxComponent implements OnDestroy, OnInit {
+-  @ViewChild('photo', {static: true})
++  // 竖图流模式下 .lightbox 分支不渲染，这里必须用动态查询（static:true 拿不到 *ngIf 内的元素）
++  @ViewChild('photo', {static: false})
+   mediaElement: GalleryLightboxMediaComponent;
+   @ViewChild('controls', {static: false}) controls: ControlsLightboxComponent;
+   @ViewChild('lightbox', {static: false}) lightboxElement: ElementRef;
+   @ViewChild('root', {static: false}) root: ElementRef;
++  @ViewChild('flow', {static: false}) flow: VerticalFlowLightboxComponent;
++
++  /** 当前目录（或搜索结果）的完整媒体分组，供竖图流使用 */
++  @Input() mediaGroups: MediaGroup[];
++  /** 竖图流关闭时抛出最后看到的那张，用于把网格滚回原位 */
++  @Output() closedAt = new EventEmitter<MediaDTO>();
++
++  public flowEnabled = false;
++  private flowMediaCache: { source: MediaGroup[]; list: GridMedia[] } = null;
+ 
+   public navigation = {hasPrev: true, hasNext: true};
+   public blackCanvasOpacity = 0;
+@@ -126,6 +152,7 @@
+   ngOnInit(): void {
+     this.infoPanelMaxWidth = 1000;
+     this.updatePhotoFrameDim();
++    this.flowEnabled = this.resolveFlowEnabled();
+     this.subscription.route = this.route.queryParams.subscribe(
+       (params: Params) => {
+         const validPhoto = params[QueryParams.gallery.photo] &&
+@@ -140,6 +167,13 @@
+         this.delayedMediaShow = null;
+         if (validPhoto) {
+           this.delayedMediaShow = params[QueryParams.gallery.photo];
++          // 竖图流：不依赖网格已渲染的节点，自己按完整列表打开
++          if (this.flowEnabled) {
++            if (this.tryOpenFlow(this.delayedMediaShow)) {
++              this.delayedMediaShow = null;
++            }
++            return;
++          }
+           // photos are not yet available to show
+           if (!this.gridPhotoQL) {
+             return;
+@@ -155,6 +189,15 @@
+     );
+   }
+ 
++  /** 媒体列表比路由晚到时补一次打开（竖图流专用） */
++  ngOnChanges(): void {
++    if (this.flowEnabled && this.delayedMediaShow) {
++      if (this.tryOpenFlow(this.delayedMediaShow)) {
++        this.delayedMediaShow = null;
++      }
++    }
++  }
++
+   ngOnDestroy(): void {
+     this.stopSlideShow();
+     if (this.subscription.photosChange != null) {
+@@ -214,6 +257,10 @@
+ 
+   @HostListener('window:resize', ['$event'])
+   onResize(): void {
++    if (this.flowEnabled) {
++      // 竖图流自己处理视口变化
++      return;
++    }
+     this.updatePhotoFrameDim();
+     if (this.activePhoto) {
+       this.animateLightbox();
+@@ -222,6 +269,12 @@
+   }
+ 
+   public nextImage(): void {
++    if (this.flowEnabled) {
++      if (this.flow) {
++        this.flow.scrollToIndex(this.flow.CurrentIndex + 1);
++      }
++      return;
++    }
+     if (this.activePhotoId + 1 < this.gridPhotoQL.length) {
+       this.navigateToPhoto(this.activePhotoId + 1);
+     } else if (this.lightboxService.loopSlideshow) {
+@@ -231,12 +284,21 @@
+ 
+   public prevImage(): void {
+     this.stopSlideShow();
++    if (this.flowEnabled) {
++      if (this.flow) {
++        this.flow.scrollToIndex(this.flow.CurrentIndex - 1);
++      }
++      return;
++    }
+     if (this.activePhotoId > 0) {
+       this.navigateToPhoto(this.activePhotoId - 1);
+     }
+   }
+ 
+   public showLigthbox(photo: MediaDTO): void {
++    if (this.flowEnabled && this.openFlow(photo)) {
++      return;
++    }
+     if (this.controls) {
+       this.controls.resetZoom();
+     }
+@@ -409,6 +471,25 @@
+   }
+ 
+   private onNavigateTo(photoStringId: string): void {
++    if (this.flowEnabled) {
++      const list = this.FlowMediaList;
++      if (!list || list.length === 0) {
++        this.delayedMediaShow = photoStringId;
++        return;
++      }
++      if (this.status === LightboxStates.Closed) {
++        this.tryOpenFlow(photoStringId);
++      } else {
++        const index = list.findIndex((g: GridMedia): boolean =>
++          this.queryService.getMediaStringId(g.media) === photoStringId
++        );
++        if (index !== -1) {
++          this.flow?.scrollToIndex(index);
++        }
++      }
++      this.delayedMediaShow = null;
++      return;
++    }
+     if (
+       this.activePhoto &&
+       this.queryService.getMediaStringId(this.activePhoto.gridMedia.media) ===
+@@ -444,6 +525,9 @@
+   }
+ 
+   private runSlideShow() {
++    if (this.flowEnabled) {
++      return;
++    }
+     if (!this.activePhoto && this.gridPhotoQL?.length > 0) {
+       this.navigateToPhoto(0);
+     }
+@@ -498,6 +582,10 @@
+   }
+ 
+   private hideLightbox(): void {
++    if (this.flowEnabled && this.flow?.isOpen()) {
++      this.closeFlow(false);
++      return;
++    }
+     if (this.controls) {
+       this.controls.resetZoom();
+     }
+@@ -533,6 +621,100 @@
+     this.hideInfoPanel(false);
+   }
+ 
++  // -------------------------------------------------------- 竖图流（定制扩展）
++
++  /** 当前目录的完整列表（网格是渐进渲染的，不能拿 gridPhotoQL 当数据源） */
++  get FlowMediaList(): GridMedia[] {
++    if (!this.mediaGroups) {
++      return null;
++    }
++    if (this.flowMediaCache?.source !== this.mediaGroups) {
++      const list: GridMedia[] = [];
++      for (const group of this.mediaGroups) {
++        for (const media of group.media) {
++          list.push(new GridMedia(media, 100, 100, 0));
++        }
++      }
++      this.flowMediaCache = {source: this.mediaGroups, list};
++    }
++    return this.flowMediaCache.list;
++  }
++
++  public onFlowClosed(last: GridMedia): void {
++    this.closeFlow(true, last);
++  }
++
++  private resolveFlowEnabled(): boolean {
++    const raw = this.route.snapshot?.queryParams?.['flow'];
++    if (raw === 'true' || raw === '1') {
++      return true;
++    }
++    if (raw === 'false' || raw === '0') {
++      return false;
++    }
++    // eslint-disable-next-line @typescript-eslint/no-explicit-any
++    const lightboxConfig = (Config as any)?.Gallery?.Lightbox;
++    return lightboxConfig?.continuousFlowView === true;
++  }
++
++  private openFlow(media: MediaDTO): boolean {
++    const list = this.FlowMediaList;
++    if (!list || list.length === 0 || !this.flow) {
++      return false;
++    }
++    let index = list.findIndex((g: GridMedia): boolean => g.media === media);
++    if (index === -1) {
++      const id = this.queryService.getMediaStringId(media);
++      index = list.findIndex((g: GridMedia): boolean =>
++        this.queryService.getMediaStringId(g.media) === id
++      );
++    }
++    if (index === -1) {
++      return false;
++    }
++    this.status = LightboxStates.Open;
++    this.overlayService.showOverlay('lightbox');
++    this.blackCanvasOpacity = 1;
++    this.activePhoto = null;
++    this.activePhotoId = index;
++    this.flow.open(list, index);
++    this.piTitleService.setMediaTitle(list[index]);
++    return true;
++  }
++
++  private tryOpenFlow(photoStringId: string): boolean {
++    if (!photoStringId) {
++      return false;
++    }
++    const list = this.FlowMediaList;
++    if (!list || list.length === 0 || !this.flow) {
++      return false;
++    }
++    const index = list.findIndex((g: GridMedia): boolean =>
++      this.queryService.getMediaStringId(g.media) === photoStringId
++    );
++    if (index === -1) {
++      return false;
++    }
++    return this.openFlow(list[index].media);
++  }
++
++  private closeFlow(notifyRouter: boolean, lastSeen?: GridMedia): void {
++    const last = lastSeen ?? this.flow?.close() ?? null;
++    this.status = LightboxStates.Closed;
++    this.activePhoto = null;
++    this.activePhotoId = null;
++    this.blackCanvasOpacity = 0;
++    this.videoSourceError = false;
++    this.overlayService.hideOverlay('lightbox');
++    if (last) {
++      this.closedAt.emit(last.media);
++    }
++    if (notifyRouter) {
++      this.hide();
++    }
++  }
++
+   private updateActivePhoto(photoIndex: number, resize = true): void {
+     if (photoIndex < 0 || photoIndex >= this.gridPhotoQL.length) {
+       throw new Error('Can\'t find the media');

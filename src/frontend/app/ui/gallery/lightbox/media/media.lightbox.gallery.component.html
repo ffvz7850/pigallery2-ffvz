@@ -1,0 +1,34 @@
+<div class="imgContainer" #imgContainer>
+  <img *ngIf="showThumbnail()"
+       [style.width.%]="imageSize.width"
+       [style.height.%]="imageSize.height"
+       [style.transform]="ImageTransform"
+       [src]="thumbnailSrc"/>
+
+  <img *ngIf="gridMedia !== null && gridMedia.isPhoto() && photo.src"
+       [style.width.%]="imageSize.width"
+       [style.height.%]="imageSize.height"
+       [style.transform]="ImageTransform"
+       [src]="photo.src"
+       [alt]="gridMedia.media.name"
+       (load)="onImageLoad()"
+       (error)="onImageError()"
+       #image/>
+
+  <video *ngIf="gridMedia !== null && gridMedia.isVideo() && loadMedia"
+         [style.width.%]="imageSize.width"
+         [style.height.%]="imageSize.height"
+         (loadstart)="onImageLoad()"
+         [loop]="lightboxService.loopVideos"
+         autoplay
+         (error)="onImageError()"
+         (timeupdate)="onVideoProgress()"
+         #video>
+    <source [src]="gridMedia.getBestFitVideoPath()" (error)="onSourceError()">
+    Something went wrong.
+  </video>
+
+
+</div>
+
+

@@ -1,0 +1,20 @@
+<button class="btn btn-secondary" type="button"
+        [disabled]="disabled"
+        (click)="openModal(modal)">
+  <ng-icon class="me-1" name="ionFolderOutline"></ng-icon><ng-container i18n>To .pg2conf</ng-container>
+</button>
+
+
+<ng-template #modal>
+  <!-- sharing Modal-->
+  <div class="modal-header">
+    <h5 class="modal-title" i18n>Saved Search to .saved_searches.pg2conf</h5>
+    <button type="button"  class="btn-close"  (click)="hideModal()" data-dismiss="modal" aria-label="Close">
+    </button>
+  </div>
+  <div class="modal-body">
+    <span i18n>Add this json to a '.saved_searches.pg2conf' file in your gallery:</span>
+    <pre class="bg-body-tertiary mt-2"><code>{{[savedSearchDTO] | json}}</code></pre>
+    <span class="mt-2" i18n>This saved search will be loaded from file during gallery indexing and it will survive a database reset.</span>
+  </div>
+</ng-template>

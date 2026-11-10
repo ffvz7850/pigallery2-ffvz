@@ -1,0 +1,22 @@
+--- a/src/frontend/app/ui/gallery/gallery.component.ts
++++ b/src/frontend/app/ui/gallery/gallery.component.ts
+@@ -10,6 +10,7 @@
+ import {interval, Observable, Subscription} from 'rxjs';
+ import {PageHelper} from '../../model/page.helper';
+ import {PhotoDTO} from '../../../../common/entities/PhotoDTO';
++import {MediaDTO} from '../../../../common/entities/MediaDTO';
+ import {QueryParams} from '../../../../common/QueryParams';
+ import {take} from 'rxjs/operators';
+ import {GallerySortingService, GroupedDirectoryContent} from './navigator/sorting.service';
+@@ -116,6 +117,11 @@
+     return (this.isPhotoWithLocation || this.gpxFilesFilterPipe.transform(this.directoryContent?.metaFile)?.length > 0) && this.mapEnabled;
+   }
+ 
++  /** 竖图流关闭后，把网格滚回最后看到的那张 */
++  public onLightboxClosedAt(media: MediaDTO): void {
++    this.grid?.scrollToMedia(media);
++  }
++
+   updateTimer(t: number): void {
+     if (this.shareService.sharingSubject.value == null) {
+       return;

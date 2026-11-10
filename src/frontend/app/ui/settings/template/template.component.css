@@ -1,0 +1,48 @@
+.title {
+  margin-left: -5px;
+}
+
+.btn {
+  margin-left: 10px;
+}
+
+
+.form-check-input:focus {
+  border-color: var(--bs-success);
+  box-shadow: var(--bs-success);
+
+}
+
+.form-switch .form-check-input:checked {
+  background-color: var(--bs-success);
+  border-color: var(--bs-success);
+}
+
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='%23a3cfbb'/></svg>");
+}
+
+.form-switch .form-check-input:checked {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+.changed-settings input {
+  border-color: var(--bs-primary);
+  border-width: 1.5px;
+}
+
+.changed-settings label {
+  color: var(--bs-primary);
+  font-weight: bold;
+}
+
+.headerless-sub-category-content .headerless-sub-category-title h5{
+  font-size: 1rem;
+}
+.headerless-sub-category-start{
+  display: none;
+}
+.headerless-sub-category-content .headerless-sub-category-start {
+  width: 2rem;
+  display: block;
+}

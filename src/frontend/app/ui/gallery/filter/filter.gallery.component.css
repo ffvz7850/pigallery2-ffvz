@@ -1,0 +1,187 @@
+@media (min-width: 768px) {
+  .col-md-1-half {
+    flex: 0 0 12.5%;
+    max-width: 12.5%;
+  }
+}
+
+.filter-column {
+  max-height: 12em;
+  overflow-y: auto;
+}
+
+.filter-option {
+  cursor: pointer;
+}
+
+.filter-option .pin {
+  height: 0;
+  font-size: 0;
+  transition: all 0.1s;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  color: #aaa;
+}
+
+.filter-option:hover .pin.filter-pin, .filter-option .pin.filter-only-selected {
+  display: inline-block;
+  height: auto;
+  font-size: 1rem;
+  margin-left: -0.6rem;
+}
+
+.filter-option:hover .pin.filter-pin:hover {
+  color: #212529;
+}
+
+.filter-option .pin.filter-only-selected {
+  color: var(--bs-primary);
+}
+
+
+.filter-container {
+  margin-top: -0.5rem;
+}
+
+.filter-container > card-body {
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.unselected {
+  color: #6c757d;
+  background-color: var(--bs-body-bg)
+}
+
+.date-filter-wrapper {
+  padding: 0;
+}
+
+.date-filter-wrapper {
+  position: relative;
+  height: 7px;
+  margin: 1.3em 0 1.3em 0;
+}
+
+.date-filter-wrapper > div {
+  position: absolute;
+  left: 10px;
+  right: 8px;
+  height: 7px;
+}
+
+.date-filter-wrapper > div > .inverse-left {
+  position: absolute;
+  left: 0;
+  height: 7px;
+  border-radius: 10px;
+  background-color: var(--bs-tertiary-color);
+  margin: 0 7px;
+}
+
+.date-filter-wrapper > div > .inverse-right {
+  position: absolute;
+  right: 0;
+  height: 7px;
+  border-radius: 10px;
+  background-color: var(--bs-tertiary-color);
+  margin: 0 7px;
+}
+
+
+.date-filter-wrapper > div > .range {
+  position: absolute;
+  left: 0;
+  height: 7px;
+  border-radius: 14px !important;
+  background-color: var(--bs-primary);
+}
+
+.date-filter-wrapper > div > .thumb {
+  position: absolute;
+  top: -6px;
+  z-index: 2;
+  height: 20px;
+  width: 20px;
+  text-align: left;
+  margin-left: -11px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  background-color: var(--bs-primary);
+  border-radius: 50% !important;
+  outline: none;
+}
+
+.date-filter-wrapper > input[type=range] {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  height: 14px;
+  top: -3px;
+  width: 100%;
+  opacity: 0;
+}
+
+div.date-filter-wrapper > input[type=range]:focus::-webkit-slider-runnable-track {
+  background: transparent;
+  border: transparent;
+}
+
+div.date-filter-wrapper > input[type=range]:focus {
+  outline: none;
+}
+
+div.date-filter-wrapper > input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 28px;
+  height: 28px;
+  border-radius: 0 !important;
+  border: 0 none;
+  background: var(--bs-primary);
+  -webkit-appearance: none;
+}
+
+div.date-filter-wrapper > input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 0 none;
+  background: var(--bs-primary);
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+div.date-filter-wrapper > input[type=range]::-moz-range-track {
+  background: transparent;
+  border: 0 none;
+  height: 14px;
+}
+
+div.date-filter-wrapper > input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+
+div.date-filter-wrapper > input[type=range]::-ms-fill-lower {
+  background: transparent;
+  border: 0 none;
+}
+
+div.date-filter-wrapper > input[type=range]::-ms-fill-upper {
+  background: transparent;
+  border: 0 none;
+}
+
+div.date-filter-wrapper > input[type=range]::-ms-tooltip {
+  display: none;
+}
+
+.date-frequency .date-frequency-column div {
+  box-sizing: content-box;
+}
+
+.date-frequency > div {
+  height: 40px;
+}

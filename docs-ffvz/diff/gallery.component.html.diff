@@ -1,0 +1,10 @@
+--- a/src/frontend/app/ui/gallery/gallery.component.html
++++ b/src/frontend/app/ui/gallery/gallery.component.html
+@@ -1,4 +1,6 @@
+-<app-gallery-lightbox #lightbox></app-gallery-lightbox>
++<app-gallery-lightbox #lightbox
++                      [mediaGroups]="directoryContent?.mediaGroups"
++                      (closedAt)="onLightboxClosedAt($event)"></app-gallery-lightbox>
+ <app-frame [showSearch]="showSearchBar" [showShare]="showShare">
+ 
+   <ng-container navbar>

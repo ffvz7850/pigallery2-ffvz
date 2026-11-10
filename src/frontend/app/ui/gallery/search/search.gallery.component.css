@@ -1,0 +1,19 @@
+form {
+  padding-right: 1em;
+}
+
+.lh-0{
+  line-height: 0;
+}
+
+@media screen and ( min-width: 1200px) {
+  .search-field {
+    max-width: 400px;
+  }
+}
+
+@media screen and ( min-width: 1400px) {
+  .search-field {
+    max-width: 500px;
+  }
+}

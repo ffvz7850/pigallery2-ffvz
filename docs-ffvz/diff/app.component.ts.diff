@@ -1,0 +1,27 @@
+--- a/src/frontend/app/app.component.ts
++++ b/src/frontend/app/app.component.ts
+@@ -29,6 +29,7 @@
+   }
+ 
+   async ngOnInit(): Promise<void> {
++    this.applyInterfaceZoom();
+     this.title.setTitle(Config.Server.applicationTitle);
+     await this.shareService.wait();
+     this.subscription = this.authenticationService.user.subscribe(() => {
+@@ -50,4 +51,16 @@
+     }
+   }
+ 
++  /** 定制的“界面缩放”：等价浏览器缩放，用于飞牛桌面等无法调浏览器缩放的环境 */
++  private applyInterfaceZoom(): void {
++    const raw = Number(Config.Gallery.interfaceZoom);
++    const pct = isFinite(raw) && raw > 0 ? Math.min(150, Math.max(50, raw)) : 100;
++    const html = document.documentElement;
++    if (pct === 100) {
++      html.style.removeProperty('zoom');
++    } else {
++      html.style.setProperty('zoom', String(pct / 100));
++    }
++  }
++
+ }

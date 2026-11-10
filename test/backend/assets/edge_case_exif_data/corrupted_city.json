@@ -1,0 +1,22 @@
+{
+  "cameraData": {
+    "ISO": 800,
+    "exposure": 0.016667,
+    "fStop": 4,
+    "focalLength": 17,
+    "make": "Canon",
+    "model": "Canon EOS 450D"
+  },
+  "creationDate": 1250803972000,
+  "fileSize": 59398,
+  "positionData": {
+    "GPSData": {
+      "latitude": 47.649403,
+      "longitude": 18.344786
+    }
+  },
+  "size": {
+    "height": 2848,
+    "width": 4272
+  }
+}

@@ -1,0 +1,41 @@
+.title h1 {
+  font-size: 80px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+
+.card {
+  min-width: 400px;
+}
+
+.error-message {
+  color: #d9534f;
+}
+
+
+@media screen and ( max-width: 500px ) {
+  .title h1 {
+    font-size: 50px;
+  }
+
+  .title img {
+    height: 50px;
+  }
+
+  .card {
+    min-width: auto;
+  }
+}
+
+/*Margin by pixel:*/
+@media screen and ( min-height: 600px ) {
+  .card {
+    margin-top: calc((100vh - 120px - 295px) / 2 - 60px)
+  }
+}
+
+ng-icon ::ng-deep svg {
+  vertical-align: text-top;
+}

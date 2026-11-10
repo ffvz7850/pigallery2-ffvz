@@ -1,0 +1,39 @@
+<div class="input-group">
+
+  <app-gallery-search-field-base [(ngModel)]="rawSearchText"
+                                 (ngModelChange)="validateRawSearchText()"
+                                 class="search-field col p-0 rounded-start-2"
+                                 (search)="search.emit()"
+                                 [placeholder]="placeholder"
+                                 name="search-field">
+
+  </app-gallery-search-field-base>
+
+  <button class="btn btn-tertiary" type="button" (click)="openSearchModal(searchModal)">
+    <ng-icon name="ionChevronDownOutline"></ng-icon>
+  </button>
+</div>
+
+
+<ng-template #searchModal>
+  <!-- sharing Modal-->
+  <div class="modal-header">
+    <h5 class="modal-title">{{placeholder}}</h5>
+    <button type="button" class="btn-close" (click)="hideSearchModal()" data-dismiss="modal" aria-label="Close">
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #searchPanelForm="ngForm" class="form-horizontal">
+
+      <app-gallery-search-query-builder
+        name="search-query-builder"
+        [(ngModel)]="searchQueryDTO"
+        [placeholder]="placeholder"
+        (ngModelChange)="onQueryChange()"
+        (search)="search.emit()">
+      </app-gallery-search-query-builder>
+
+
+    </form>
+  </div>
+</ng-template>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="<%= Config.Server.urlBase %>/"/>
+  <meta charset="UTF-8">
+  <title>Loading..</title>
+  <link rel="shortcut icon" href="icon_auto.svg">
+  <link rel="shortcut icon" sizes="256x256"  href="icon.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="theme-color" content="#000000" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <link rel="apple-touch-icon" href="icon_auto.svg">
+  <link rel="apple-touch-icon" sizes="256x256"  href="icon.png">
+
+  <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
+
+  <script>
+    var ServerInject = {user:  <%- JSON.stringify(user); %>, ConfigInject: <%- JSON.stringify(Config); %>, UIExtensionConfigs:<%- JSON.stringify(UIExtensionConfigs); %>}
+  </script>
+
+  <script>
+    <%- customHTMLHead %>
+  </script>
+
+</head>
+
+<body style="overflow-y: scroll; padding-right: 0 !important;">
+<app-pi-gallery2>
+  <div style="position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    left: 50%;
+    text-align: center">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="d-inline-block align-top"
+         style="width: 200px;max-width: calc(50vw);max-height: calc(50vh);"
+         fill="currentcolor"
+         viewBox="<%- Config.Server.svgIcon.viewBox || '0 0 512 512' %>">
+     <!-- <%- "-->"+Config.Server.svgIcon.items+"<!--" %> -->
+    </svg>
+    <h2 style="margin-top: 1em">Loading...</h2>
+  </div>
+</app-pi-gallery2>
+
+<style>
+  <%- usedTheme %>
+</style>
+</body>
+</html>

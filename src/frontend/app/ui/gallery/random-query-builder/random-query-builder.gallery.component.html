@@ -1,0 +1,44 @@
+<button class="dropdown-item {{enabled? '' : 'disabled'}}" (click)="openModal(randomModal)">
+  <ng-icon name="ionShuffleOutline"></ng-icon>
+  <ng-container i18n>Random link</ng-container>
+</button>
+
+
+<ng-template #randomModal>
+  <!-- sharing Modal-->
+  <div class="modal-header">
+    <h5 class="modal-title" i18n>Random Link creator</h5>
+    <button type="button"  class="btn-close"  (click)="hideModal()" data-dismiss="modal" aria-label="Close">
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col">
+        <input id="randomLink"
+               name="randomLink"
+               placeholder="link"
+               class="form-control input-md"
+               type="text"
+               [ngModel]="url">
+      </div>
+      <div class="col-auto">
+        <button id="copyButton" name="copyButton"
+                ngxClipboard [cbContent]="url"
+                (cbOnSuccess)="onCopy()"
+                class="btn btn-primary btn-block" i18n>Copy
+        </button>
+      </div>
+    </div>
+    <hr/>
+    <form #searchPanelForm="ngForm" class="form-horizontal">
+      <app-gallery-search-query-builder
+        id="album-search-query-builder"
+        name="album-search-query-builder"
+        [(ngModel)]="searchQueryDTO"
+        (change)="onQueryChange()">
+      </app-gallery-search-query-builder>
+
+
+    </form>
+  </div>
+</ng-template>
