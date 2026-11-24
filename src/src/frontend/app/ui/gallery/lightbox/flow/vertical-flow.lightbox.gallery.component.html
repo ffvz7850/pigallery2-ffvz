@@ -1,0 +1,51 @@
+<div class="vf-root" *ngIf="opened"
+     [style.zoom]="inverseZoom === 1 ? null : inverseZoom">
+  <div class="vf-scroll" #scroll (scroll)="onScroll()" (click)="toggleHud()">
+    <div class="vf-canvas" [style.height.px]="totalHeight">
+      <div class="vf-item" *ngFor="let w of windowItems; trackBy: trackIndex"
+           [style.transform]="'translate3d(0,' + w.top + 'px,0)'"
+           [style.height.px]="w.height">
+
+        <!-- 底图：720 档，挂载即由浏览器自己加载；顺手补齐比例。
+             两种情况不挂（见 needBg）：设置里关掉了底图 / 视频封面本来就是同一个 720。
+             目的只有一个：同一张图只留一份 720，不重复下载、不重复解码。 -->
+        <img class="vf-bg" *ngIf="needBg(w)" [src]="thumbOf(w.item)" alt="" aria-hidden="true"
+             decoding="async" fetchpriority="high"
+             (load)="onThumbLoad(w.item, $event)"/>
+
+        <ng-container *ngIf="w.item.gridMedia.isPhoto()">
+          <!-- fullSrcOf 可能返回空（这张还没轮到绑 / 甩动中新进窗口的）：这时整个 img 不渲染。
+               但只要绑过一次就永远返回同一个 URL，滑动中不会摘元素、不会换 src —— 不闪。 -->
+          <img class="vf-full" *ngIf="fullSrcOf(w) as srcUrl" [class.vf-ok]="w.item.loaded"
+               [class.vf-failed]="w.item.failed"
+               [src]="srcUrl"
+               decoding="async"
+               [alt]="w.item.gridMedia.media.name"
+               (load)="onImageLoad(w.item, $event)"
+               (error)="onImageError(w.item)"/>
+        </ng-container>
+
+        <ng-container *ngIf="w.item.gridMedia.isVideo()">
+          <video *ngIf="w.item.playing" class="vf-video" controls playsinline autoplay
+                 [src]="videoOf(w.item)"></video>
+          <ng-container *ngIf="!w.item.playing">
+            <img class="vf-poster" [class.vf-ok]="w.item.posterDecoded"
+                 [src]="posterOf(w.item)"
+                 alt=""
+                 decoding="async" fetchpriority="high"
+                 (load)="onPosterLoad(w.item, $event)"
+                 (error)="onPosterError(w.item)"/>
+            <button class="vf-play" type="button"
+                    (click)="playVideo(w.item, $event)" aria-label="play">▶</button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="vf-topbar" [class.vf-hidden]="!hudVisible">
+    <span class="vf-hud">{{ current + 1 }} / {{ items.length }}</span>
+    <button class="vf-close" type="button" (click)="requestClose()" aria-label="close">&times;</button>
+  </div>
+
+</div>

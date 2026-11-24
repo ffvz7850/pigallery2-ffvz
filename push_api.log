@@ -1,0 +1,44 @@
+待上传文件: 953 个
+main HEAD: a4712d0762fa4c198621d8bac1259690058ca3b3
+  blob 50/953  5s
+  blob 100/953  12s
+  blob 150/953  19s
+  blob 200/953  22s
+  blob 250/953  25s
+  blob 300/953  45s
+  失败: src/src/common/SearchQueryParser.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/SupportedFormats.ts -> HTTP Error 403: Forbidden
+  blob 350/953  45s
+  失败: src/src/common/entities/DuplicatesDTO.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/entities/GridSizes.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/entities/Message.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/entities/UserDTO.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/entities/UserModificationRequest.ts -> HTTP Error 403: Forbidden
+  失败: src/src/common/event/EventLimit.ts -> HTTP Error 403: Forbidden
+  blob 400/953  58s
+  失败: src/src/frontend/app/app.component.ts -> HTTP Error 403: Forbidden
+  blob 450/953  64s
+  blob 500/953  68s
+  blob 550/953  71s
+  blob 600/953  74s
+  blob 650/953  79s
+  blob 700/953  83s
+  blob 750/953  88s
+  失败: src/test/backend/assets/sidecar/20240128_185808.JPG -> HTTP Error 403: Forbidden
+  失败: src/test/backend/assets/sidecar/flatxmp.jpg -> HTTP Error 403: Forbidden
+  blob 800/953  101s
+  失败: src/test/backend/assets/sidecar/testimagedesc1.xmp -> HTTP Error 403: Forbidden
+  失败: src/test/backend/assets/sidecar/testimagedesc2.xmp -> HTTP Error 403: Forbidden
+  失败: src/test/backend/assets/sidecar/orientation/photo.6.sidecar.jpg.xmp -> HTTP Error 403: Forbidden
+  失败: src/test/backend/assets/timestamps/big_ben_no_tsoffset_but_gps_utc_off_by_1min.jpg -> HTTP Error 403: Forbidden
+  失败: src/test/backend/integration/model/sql/typeorm.ts -> HTTP Error 403: Forbidden
+  blob 850/953  112s
+  失败: src/test/backend/integration/routers/RouteTestingHelper.js -> HTTP Error 403: Forbidden
+  失败: src/test/backend/integration/routers/UploadRouter.spec.ts -> HTTP Error 403: Forbidden
+  失败: src/test/backend/unit/model/fileprocessing/VideoProcessing.spec.js -> HTTP Error 403: Forbidden
+  失败: src/test/backend/unit/model/fileprocessing/VideoProcessing.spec.ts -> HTTP Error 403: Forbidden
+  失败: src/test/backend/unit/model/sql/AlbumManager.spec.js -> HTTP Error 403: Forbidden
+  失败: src/test/backend/unit/model/sql/AlbumManager.spec.ts -> HTTP Error 403: Forbidden
+  blob 900/953  122s
+  blob 950/953  125s
+有 22 个文件失败，中止

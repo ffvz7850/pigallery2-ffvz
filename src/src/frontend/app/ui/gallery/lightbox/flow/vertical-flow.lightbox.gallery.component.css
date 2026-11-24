@@ -1,0 +1,217 @@
+:host {
+  display: block;
+  /* 整层的"虚空色"：图片没到位时露出来的底。
+     不用纯黑，也不用中性灰 —— 纯黑和亮图反差太大、中性灰偏冷，都容易被读成"闪一下空洞"。
+     这里用偏暖的米褐（r>g>b，约 28% 亮度）：和暖调人像/室内照片接得上，
+     缩略图 / 原图淡入进来像"从暗处显影"，不是"从洞里蹦出来"。
+     根层和每一项共用同一个值 —— 任何缝隙、任何一帧都不会突然冒出一条异色边。 */
+  --vf-void: #4e4636;
+}
+
+.vf-root {
+  position: fixed;
+  inset: 0;
+  /* 必须高于灯箱黑幕（.blackCanvas z-index:1099）和 .lightbox（1100） */
+  z-index: 1101;
+  background: var(--vf-void);
+}
+
+.vf-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+  scrollbar-width: none;
+}
+
+.vf-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.vf-canvas {
+  position: relative;
+  width: 100%;
+}
+
+.vf-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  /* 布局 / 重绘互相隔离：滚动换项时只有变动的那一项要重算，
+     不会把 canvas 上其余几项一起拖进重排。
+     底色用 --vf-void（见 :host）：不做按图取色 —— 每张读一次像素约 12 ms
+     （4× 降速下 48 ms），正是之前滚动卡顿的主因。
+     不写 will-change：内联的 translate3d 已经让每项自带合成层，
+     will-change 只会让层常驻显存、没有额外收益。 */
+  contain: layout paint;
+  background-color: var(--vf-void);
+}
+
+.vf-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  /* 淡入用 animation 而不是 transition。
+     transition 有个硬条件：起始值必须**已经被渲染过**才会跑。虚拟滚动里
+     "挂载 img + 同一帧置 opacity:1" 是常态，浏览器就把 0 直接跳成 1 —— 图上屏"啪"一下，
+     不是时长太短，是过渡根本没开始。animation 有 from 关键帧，天生从头播，不吃这个亏，
+     而且合成线程就能跑完，不用每帧拉主线程。 */
+}
+
+.vf-item img.vf-ok {
+  opacity: 1;
+  /* 0.2 s：Material 3 里「fade」（内容浮现）对应的就是 duration-short4 = 200ms，
+     且 M3 建议 300ms 是人类「它还跟得上我的操作」的心理上限。
+     这里底下已经垫着 720 底图，换的是清晰度不是有无，所以取短的一档 —— 早 80ms 看见清晰。 */
+  animation: vf-fade-in 0.2s ease-out;
+}
+
+@keyframes vf-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.vf-item img.vf-failed {
+  opacity: 0.35;
+}
+
+/* 打底层：真实 <img>，挂载即出图、常驻不撤。
+   同权重必须写在 .vf-ok 之后，否则会被上面的 .vf-item img { opacity:0 } 吃掉。
+   提升为独立合成层：大图解码冲击栅格缓存时，不会把打底层一起丢掉。
+   不用 will-change —— 它表示「这个属性将要变化」，这里 transform 永远不变，
+   只会让层常驻显存、触发无谓的层提升。 */
+.vf-item img.vf-bg {
+  opacity: 1;
+  transition: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 视频封面：已在预载阶段下载 + 解码，挂上即可绘制；
+   未就绪时保持透明，先露出下面的缩略图占位，再淡入成清晰封面 */
+.vf-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+}
+
+.vf-item img.vf-poster.vf-ok {
+  opacity: 1;
+  animation: vf-fade-in 0.2s ease-out;
+}
+
+.vf-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--vf-void);
+}
+
+.vf-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 24px;
+  line-height: 64px;
+  cursor: pointer;
+}
+
+/* 顶栏：默认整条隐藏（沉浸看图），点画面才浮出来。
+   计数靠左、关闭键贴右，两个都锁在同一个 56px 高、56px 点击区里 —— 所以是同一水平线。 */
+.vf-topbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(4px + env(safe-area-inset-top, 0px));
+  height: 56px;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.18s ease;
+}
+
+.vf-hud {
+  position: absolute;
+  left: calc(24px + env(safe-area-inset-left, 0px));
+  top: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55), 0 0 2px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+}
+
+/* 关闭键：右上角、无底色无阴影、半透明大号 ×，与计数同风格 */
+.vf-close {
+  position: absolute;
+  right: calc(4px + env(safe-area-inset-right, 0px));
+  top: 0;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: rgba(255, 255, 255, 0.72);
+  /* 无黑底会让白 X 在亮照片上消失：用极轻的投影兜底，视觉上仍像“悬浮的透明叉” */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55), 0 0 2px rgba(0, 0, 0, 0.4);
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s ease;
+}
+
+.vf-close:hover,
+.vf-close:focus-visible {
+  color: rgba(255, 255, 255, 0.95);
+  outline: none;
+}
+
+/* 点击画面：计数与关闭键一起淡出，再点恢复 */
+.vf-topbar.vf-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 隐藏时连关闭键也不能点：父级的 pointer-events:none 会被子级的 auto 覆盖回来，
+   不显式关掉的话，看不见的 × 仍然能点中，右上角随手一碰就把灯箱关了。 */
+.vf-topbar.vf-hidden .vf-close {
+  pointer-events: none;
+}
